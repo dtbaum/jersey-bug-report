@@ -25,7 +25,6 @@ import jakarta.ws.rs.core.MediaType;
  * 
  * Once the first GET request is completed, 
  * all subsequent requests work without error.
- *
  */
 public class BugReport
 {
@@ -90,7 +89,7 @@ public class BugReport
           }
           catch (Exception e)
           {
-            //get following exception here, if THREAD_NUMBER > 1
+            //get an exception here, if THREAD_NUMBER > 1:
             //jakarta.ws.rs.ProcessingException: javax.net.ssl.SSLHandshakeException: PKIX path building failed:
             e.printStackTrace();
           }
