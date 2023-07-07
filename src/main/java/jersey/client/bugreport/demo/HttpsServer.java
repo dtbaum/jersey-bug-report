@@ -52,7 +52,7 @@ class HttpsServer implements Runnable
             {
               throw new IOException("no data received");
             }
-            System.out.printf("Server received: %s\n", new String(data, 0, len));
+            //System.out.printf("Server received: %s\n", new String(data, 0, len));
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
             writer.println("HTTP/1.1 200 OK");
             writer.println("Content-Type: text/html");

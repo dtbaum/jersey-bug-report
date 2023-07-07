@@ -29,8 +29,8 @@ import jakarta.ws.rs.core.MediaType;
  */
 public class BugReport
 {
-  // private static int THREAD_NUMBER = 1; // set THREAD_NUMBER > 1 to reproduce an issue
-  private static int THREAD_NUMBER = 10;
+  // private static int THREAD_NUMBER = 10; // set THREAD_NUMBER > 1 to reproduce an issue
+  private static int THREAD_NUMBER = 1;
 
   private volatile static int responseCounter = 0;
 
@@ -53,6 +53,11 @@ public class BugReport
 
   public static void main(String[] args) throws Exception
   {
+     if (THREAD_NUMBER == 1)
+    {
+      System.out.println("\nThis is the working case (THREAD_NUMBER==1). Set THREAD_NUMBER > 1 to reproduce the error! \n");
+    }
+
     final HttpsServer server = new HttpsServer(createContext());
     Executors.newFixedThreadPool(1).submit(server);
 
@@ -81,7 +86,7 @@ public class BugReport
             String ret = client.target("https://127.0.0.1:" + server.getPort()).request(MediaType.TEXT_HTML)
                 .get(new GenericType<String>()
                 {});
-            System.out.println(++responseCounter + ". RET: " + ret);
+            System.out.print(++responseCounter + ". Server returned: " + ret);
           }
           catch (Exception e)
           {
