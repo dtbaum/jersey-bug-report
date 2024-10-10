@@ -1,8 +1,10 @@
 package jersey.client.bugreport.demo;
 
+import jakarta.ws.rs.client.ClientBuilder;
 import java.io.InputStream;
 import java.net.URL;
 import java.security.KeyStore;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -13,7 +15,6 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManagerFactory;
 
 import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.MediaType;
 
@@ -28,8 +29,7 @@ import jakarta.ws.rs.core.MediaType;
  */
 public class BugReport
 {
-  // private static int THREAD_NUMBER = 10; // set THREAD_NUMBER > 1 to reproduce an issue
-  private static int THREAD_NUMBER = 1;
+  private static int THREAD_NUMBER = 5;
 
   private volatile static int responseCounter = 0;
 
@@ -82,14 +82,14 @@ public class BugReport
           try
           {
             Client client = builder.build();
-            String ret = client.target("https://127.0.0.1:" + server.getPort()).request(MediaType.TEXT_HTML)
+            String ret = client.target("https://127.0.0.1:" + server.getPort() + "/" + new Random().nextInt()).request(MediaType.TEXT_HTML)
                 .get(new GenericType<String>()
                 {});
             System.out.print(++responseCounter + ". Server returned: " + ret);
           }
           catch (Exception e)
           {
-            //get an exception here, if THREAD_NUMBER > 1:
+            //get an exception here, if jersey lib is buggy and THREAD_NUMBER > 1:
             //jakarta.ws.rs.ProcessingException: javax.net.ssl.SSLHandshakeException: PKIX path building failed:
             e.printStackTrace();
           }
